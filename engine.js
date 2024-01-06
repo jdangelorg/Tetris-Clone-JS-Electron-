@@ -1,5 +1,6 @@
 import { KeyboardInput } from './interface.js';
 import './drawing.js';
+import * as KeyboardFunctions from './keyboardFunctions.js'
 
 // Customize this file to set up your "game engine"
 
@@ -24,6 +25,9 @@ export class Engine {
   this.editing=true;
   this.tileSelect=null;
   this.tileset=null;
+   this.oneBlockWidth = 25;
+   this.blocksWide = this.oneBlockWidth * 10;
+   this.blocksTall = this.oneBlockWidth * 20;
   this.GetWindowSize();
   this.InitEvents();
   this.InitControls();
@@ -37,7 +41,9 @@ export class Engine {
   this.input=new KeyboardInput();
   this.input.engine = this;
   // numpad
-  this.input.n0.release = function() {  };
+  this.input.n0.release = () => {
+    KeyboardFunctions.safetyMoveTetronimoUp(this.currentFloatingTetronimo, this.oneBlockWidth)
+  }
   this.input.n1.release = function() {  };
   this.input.n2.release = function() {  };
   this.input.n3.release = function() {  };
@@ -52,11 +58,21 @@ export class Engine {
   this.input.rbracket.release = function() {  };
   this.input.slash.release    = function() {  };
   // arrows
-  this.input.left.press  = function() {  };
+  this.input.left.press = () => {
+    KeyboardFunctions.handleLeftPress(this.currentFloatingTetronimo, this.oneBlockWidth, this.blocksWide)
+  }
    this.input.left.release  = function() {  };
   this.input.up.release    = function() {  };
+   this.input.up.press = () => {
+    KeyboardFunctions.handleUpPress(this.currentFloatingTetronimo, this.oneBlockWidth, this.blocksWide, this.blocksTall)
+  }
   this.input.down.release  = function() {  };
-  this.input.right.press = function() {  };
+   this.input.down.press = () => {
+    KeyboardFunctions.handleDownPress(this.currentFloatingTetronimo, this.oneBlockWidth, this.blocksTall)
+  }
+  this.input.right.press = () => {
+    KeyboardFunctions.handleRightPress(this.currentFloatingTetronimo, this.oneBlockWidth, this.blocksWide)
+  }
    this.input.right.release = function() {  };
   // ESC (quit)
   this.input.esc.release = function() { window.close() };
@@ -86,8 +102,8 @@ export class Engine {
  }
 
  GetWindowSize() {
-  this.width = 250;
-  this.height = 500;
+  this.width = this.blocksWide;
+  this.height = this.blocksTall;
  }
 
  OnResize() {
@@ -112,52 +128,14 @@ export class Engine {
  }
 
 EngineSetup() {
-//  console.log("Engine Setup");
- // Replace this with whatever...
-//  this.sprites = new PIXI.particles.ParticleContainer(10000, {     scale: true,     position: true,     rotation: true,     uvs: true,     alpha: true });
-//  this.entities = [];  // create an array to store all the sprites
-//  this.totalSprites = this.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;  // size of graphic effects performance...
+  this.currentFloatingTetronimo = null;
   const redTetromino = PIXI.Sprite.fromImage('./assets/tetromino-sprites/red_s_tetromino.png');
-  redTetromino.scale.set(0.25,0.25)
+  redTetromino.scale.set(this.oneBlockWidth/100,this.oneBlockWidth/100);
   this.stage.addChild(redTetromino);
-/*  for (var i = 0; i < this.totalSprites; i++) {
-     // create a new Sprite
-     var dude = PIXI.Sprite.fromImage('./bunny.png');
-     dude.tint = Math.random() * 0xE8D4CD;
-     dude.anchor.set(0.5);
-     dude.scale.set(0.8 + Math.random() * 0.3);
-     dude.x = Math.random() * this.width;
-     dude.y = Math.random() * this.height;
-     dude.tint = Math.random() * 0x808080;
-     dude.direction = Math.random() * Math.PI * 2;
-     dude.turningSpeed = Math.random() - 0.8;
-     dude.speed = (2 + Math.random() * 2) * 0.2;
-     dude.offset = Math.random() * 100;
-     this.entities.push(dude);
-     this.sprites.addChild(dude);
- }
- this.stage.addChild(this.sprites); */
+  this.currentFloatingTetronimo = redTetromino;
 
  this.app.ticker.add(function(delta) {
-//   if ( engine ) console.log("Tick: "+engine.time+" delta: "+delta);
-//    var boundsPadding = 100;
-//    var boundbox = new PIXI.Rectangle( -boundsPadding,  -boundsPadding,  engine.width + boundsPadding * 2, engine.height + boundsPadding * 2 );
-     //// Replace this with whatever you'd like
-/*        for (var i = 0; i < engine.entities.length; i++) { // iterate through the sprites and update their position
-           var dude = engine.entities[i];
-           dude.scale.y = 0.95 + Math.sin(engine.time + dude.offset) * 0.05;
-           dude.direction += dude.turningSpeed * 0.01;
-           dude.x += Math.sin(dude.direction) * (dude.speed * dude.scale.y);
-           dude.y += Math.cos(dude.direction) * (dude.speed * dude.scale.y);
-           dude.rotation = -dude.direction + Math.PI;
-           // wrap xy world
-           if (dude.x < boundbox.x) dude.x += boundbox.width;
-           else if (dude.x > boundbox.x + boundbox.width) dude.x -= boundbox.width;
-           if (dude.y < boundbox.y) dude.y += boundbox.height;
-           else if (dude.y > boundbox.y + boundbox.height) dude.y -= boundbox.height;
-       } */
-//        engine.time += engine.frametime;  // 30ms tick-time
-      ////
+
 });
 
  ///
