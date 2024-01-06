@@ -1,5 +1,9 @@
 const electron = require('electron')
 
+try {
+  require('electron-reloader')(module)
+} catch (_) {}
+
 
 // Module to control application life.
 const app = electron.app
@@ -16,9 +20,8 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800, height: 600,
-    frame:false, show:false,
-    fullscreen: true, title:"Lost Astronaut Games"
+    width: 600,
+    height: 800,
   })
 
    // and load the index.html of the app.
@@ -30,7 +33,6 @@ function createWindow () {
 
   mainWindow.once('ready-to-show', () => {
       mainWindow.show()
-      mainWindow.maximize();
  })
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -70,6 +72,6 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-require('electron-debug')({showDevTools: true});
+// require('electron-debug')({showDevTools: true});
 
 module.mainWindow = mainWindow;

@@ -1,9 +1,9 @@
-let KeyboardInput = require('./interface.js');
-require('./drawing.js');
+import { KeyboardInput } from './interface.js';
+import './drawing.js';
 
 // Customize this file to set up your "game engine"
 
-class Engine {
+export class Engine {
 
  constructor() {
   this.Init();
@@ -12,7 +12,7 @@ class Engine {
  }
 
  InitEvents() {
-  window.addEventListener("resize",resizeEvent);
+//   window.addEventListener("resize",resizeEvent);
  }
 
  Init() {
@@ -52,21 +52,23 @@ class Engine {
   this.input.rbracket.release = function() {  };
   this.input.slash.release    = function() {  };
   // arrows
-  this.input.left.release  = function() {  };
+  this.input.left.press  = function() {  };
+   this.input.left.release  = function() {  };
   this.input.up.release    = function() {  };
   this.input.down.release  = function() {  };
-  this.input.right.release = function() {  };
+  this.input.right.press = function() {  };
+   this.input.right.release = function() {  };
   // ESC (quit)
   this.input.esc.release = function() { window.close() };
-  console.log("Keyboard Controls Initialized");
+//   console.log("Keyboard Controls Initialized");
  }
 
 //  this.ImportTileset();
  InitRenderer() {
-//  this.app = new PIXI.Application();
   this.app = new PIXI.Application({
-   backgroundColor:0x900000
+   backgroundColor:'black'
   });
+//   console.log('app',this.app.view)
   this.renderer = this.app.renderer;
   document.body.appendChild(this.app.view); // Add the view to the DOM
   this.stage = new PIXI.Container();
@@ -78,44 +80,47 @@ class Engine {
   this.renderer.view.style.display = "block";
   this.renderer.autoResize = false;
   this.renderer.resize(window.innerWidth, window.innerHeight);
-  console.log(window.innerWidth+"x"+window.innerHeight);
+//   console.log(window.innerWidth+"x"+window.innerHeight);
   this.scrolled = { x:0, y:0 };
   this.tilepicker={ };
  }
 
  GetWindowSize() {
-  this.width = this.body.offsetWidth-3;
-  this.height = this.body.offsetHeight-3;
+  this.width = 250;
+  this.height = 500;
  }
 
  OnResize() {
   this.GetWindowSize();
   this.renderer.resize(this.width,this.height);
-  console.log(this.width+"x"+this.height);
+//   console.log("resized to:",this.width+"x"+this.height);
   if ( !this.renderer ) return;
   this.isWebGL = this.renderer instanceof PIXI.WebGLRenderer
   if (!this.isWebGL) {
     alert("No GL Support: this app requires OpenGL.");
   }
-  console.log(this);
+//   console.log(this);
  }
 
  DeferredInit() {
-  console.log("Deferred Init");
+//   console.log("Deferred Init");
  }
 
 
  DelayedInit() {
-  console.log("Delayed Init");
+//   console.log("Delayed Init");
  }
 
 EngineSetup() {
- console.log("Engine Setup");
+//  console.log("Engine Setup");
  // Replace this with whatever...
- this.sprites = new PIXI.particles.ParticleContainer(10000, {     scale: true,     position: true,     rotation: true,     uvs: true,     alpha: true });
- this.entities = [];  // create an array to store all the sprites
- this.totalSprites = this.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;  // size of graphic effects performance...
- for (var i = 0; i < this.totalSprites; i++) {
+//  this.sprites = new PIXI.particles.ParticleContainer(10000, {     scale: true,     position: true,     rotation: true,     uvs: true,     alpha: true });
+//  this.entities = [];  // create an array to store all the sprites
+//  this.totalSprites = this.renderer instanceof PIXI.WebGLRenderer ? 100 : 10;  // size of graphic effects performance...
+  const redTetromino = PIXI.Sprite.fromImage('./assets/tetromino-sprites/red_s_tetromino.png');
+  redTetromino.scale.set(0.25,0.25)
+  this.stage.addChild(redTetromino);
+/*  for (var i = 0; i < this.totalSprites; i++) {
      // create a new Sprite
      var dude = PIXI.Sprite.fromImage('./bunny.png');
      dude.tint = Math.random() * 0xE8D4CD;
@@ -131,14 +136,14 @@ EngineSetup() {
      this.entities.push(dude);
      this.sprites.addChild(dude);
  }
- this.stage.addChild(this.sprites);
+ this.stage.addChild(this.sprites); */
 
  this.app.ticker.add(function(delta) {
 //   if ( engine ) console.log("Tick: "+engine.time+" delta: "+delta);
-   var boundsPadding = 100;
-   var boundbox = new PIXI.Rectangle( -boundsPadding,  -boundsPadding,  engine.width + boundsPadding * 2, engine.height + boundsPadding * 2 );
+//    var boundsPadding = 100;
+//    var boundbox = new PIXI.Rectangle( -boundsPadding,  -boundsPadding,  engine.width + boundsPadding * 2, engine.height + boundsPadding * 2 );
      //// Replace this with whatever you'd like
-       for (var i = 0; i < engine.entities.length; i++) { // iterate through the sprites and update their position
+/*        for (var i = 0; i < engine.entities.length; i++) { // iterate through the sprites and update their position
            var dude = engine.entities[i];
            dude.scale.y = 0.95 + Math.sin(engine.time + dude.offset) * 0.05;
            dude.direction += dude.turningSpeed * 0.01;
@@ -150,8 +155,8 @@ EngineSetup() {
            else if (dude.x > boundbox.x + boundbox.width) dude.x -= boundbox.width;
            if (dude.y < boundbox.y) dude.y += boundbox.height;
            else if (dude.y > boundbox.y + boundbox.height) dude.y -= boundbox.height;
-       }
-       engine.time += engine.frametime;  // 30ms tick-time
+       } */
+//        engine.time += engine.frametime;  // 30ms tick-time
       ////
 });
 
@@ -174,16 +179,17 @@ function Loop() {
  requestAnimationFrame(Loop);
 }
 
-addEventListener( 'load', Go );
 function Go() {
- console.log("Go");
+//  console.log("Go");
  engine=new Engine;
 // engine.MapEditMode();
- console.log(engine);
+//  console.log(engine);
  setTimeout(function(){engine.DeferredInit();requestAnimationFrame(Loop);},30);
  setTimeout(function(){engine.DelayedInit();},1500);
- console.log(engine);
+//  console.log(engine);
 }
+
+addEventListener('load', Go );
 
 
 var engine = new Engine;

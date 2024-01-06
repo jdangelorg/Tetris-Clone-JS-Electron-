@@ -23,7 +23,7 @@ document.addEventListener('mousemove', onMouseMove, true);
 document.addEventListener('mouseup', onMouseUp, true);
 
 // Instantiated in engine.js
-class KeyboardInput {
+export class KeyboardInput {
  constructor() {
   this.bksp=this.keyboard(8);
   this.enter=this.keyboard(10);
@@ -127,7 +127,7 @@ key.downHandler = function(event) {
     if (key.isUp && key.press) key.press();
     key.isDown = true;
     key.isUp = false;
-    console.log(key);
+//     console.log(key,"down");
   }
   event.preventDefault();
 };
@@ -137,7 +137,7 @@ key.upHandler = function(event) {
     if (key.isDown && key.release) key.release();
     key.isDown = false;
     key.isUp = true;
-    console.log(key);
+//     console.log(key,"up");
   }
   event.preventDefault();
 };
@@ -147,5 +147,3 @@ window.addEventListener(    "keyup", key.upHandler.bind(key), false  );
 return key;
 }
 };
-
-module.exports = KeyboardInput;

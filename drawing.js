@@ -1,7 +1,7 @@
 
 // Add drawing routines to this file to reproduce specific drawing methods for pixijs.
 
-class RoundBox {
+export class RoundBox {
  constructor(fill,border,thickness,x,y,w,h,rad,alpha ) {
   this.CreateFrom(fill,border,thickness,x,y,w,h,rad,alpha);
  }

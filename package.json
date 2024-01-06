@@ -2,7 +2,7 @@
   "name": "pixitron",
   "version": "1.0.0",
   "description": "A minimal Electron+Pixi game engine application, packed with Pixijs 4.7.1",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron ."
   },
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "electron-debug": "^1.5.0",
+    "electron-reloader": "^1.2.3",
     "howler": "^2.2.1",
     "pixi-display": "^1.1.1",
     "pixi.js": "^4.7.3"
